@@ -1,0 +1,265 @@
+'use strict';
+
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function initMobileMenu() {
+  const burger = document.querySelector('.burger');
+  const nav = document.querySelector('.nav');
+  if (!burger || !nav) return;
+
+  const setOpen = (open) => {
+    nav.classList.toggle('nav--open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Закрити меню' : 'Відкрити меню');
+  };
+
+  burger.addEventListener('click', () => setOpen(burger.getAttribute('aria-expanded') !== 'true'));
+  nav.addEventListener('click', (e) => { if (e.target.closest('.nav__link')) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  window.matchMedia('(min-width: 48em)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+}
+
+function initSmoothScroll() {
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute('href').slice(1);
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return;
+
+    e.preventDefault();
+    target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    history.pushState(null, '', `#${id}`);
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  });
+}
+
+function initPortfolioFilter() {
+  const buttons = document.querySelectorAll('.filters__btn');
+  const items = document.querySelectorAll('.mosaic__item');
+  if (!buttons.length) return;
+
+  const applyFilter = (filter) => {
+    items.forEach((item) => {
+      const isMatch = filter === 'all'
+        ? !item.hasAttribute('data-extra')
+        : item.dataset.category === filter;
+
+      item.hidden = !isMatch;
+    });
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('filters__btn--active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+
+      applyFilter(filter);
+    });
+  });
+
+  applyFilter('all');
+}
+
+function initSlider() {
+  const slider = document.getElementById('slider');
+  const track = slider && slider.querySelector('.slider__track');
+  const toggle = slider && slider.querySelector('.slider__toggle');
+  if (!track || !toggle) return;
+
+  [...track.children].forEach((item, i) => {
+    const clone = item.cloneNode(true);
+    clone.dataset.cloneOf = i;
+    clone.setAttribute('aria-hidden', 'true');
+    const btn = clone.querySelector('button');
+    btn.removeAttribute('data-lightbox');
+    btn.tabIndex = -1;
+    track.appendChild(clone);
+  });
+
+  toggle.addEventListener('click', () => {
+    const paused = slider.classList.toggle('slider--paused');
+    toggle.setAttribute('aria-pressed', String(paused));
+    toggle.setAttribute('aria-label', paused ? 'Відновити анімацію стрічки' : 'Призупинити анімацію стрічки');
+  });
+}
+
+function initLightbox() {
+  const box = document.getElementById('lightbox');
+  if (!box) return;
+  const img = box.querySelector('.lightbox__img');
+  const caption = box.querySelector('.lightbox__caption');
+  const btnClose = box.querySelector('.lightbox__btn--close');
+  const btnPrev = box.querySelector('.lightbox__btn--prev');
+  const btnNext = box.querySelector('.lightbox__btn--next');
+
+  let list = [], index = 0, opener = null, touchX = null;
+
+  const setImage = (src, alt, label) => {
+    const next = new Image();
+    next.decoding = 'async';
+    next.onload = () => {
+      img.src = src;
+      img.alt = alt;
+      caption.textContent = label;
+      requestAnimationFrame(() => img.classList.remove('lightbox__img--fade'));
+    };
+    next.onerror = () => {
+      img.src = src;
+      img.alt = alt;
+      caption.textContent = label;
+      img.classList.remove('lightbox__img--fade');
+    };
+    img.classList.add('lightbox__img--fade');
+    next.src = src;
+  };
+
+  const render = (i) => {
+    index = (i + list.length) % list.length;
+    const el = list[index];
+    const thumb = el.querySelector('img');
+    const fullSrc = el.dataset.full || thumb.currentSrc || thumb.src;
+    const label = `${el.dataset.caption || thumb.alt} · ${index + 1} / ${list.length}`;
+    setImage(fullSrc, thumb.alt, label);
+  };
+
+  const open = (trigger) => {
+    list = [...document.querySelectorAll(`[data-lightbox][data-gallery="${trigger.dataset.gallery}"]`)]
+      .filter((el) => !el.closest('[hidden]'));
+    opener = trigger;
+    box.hidden = false;
+    document.body.classList.add('is-locked');
+    render(list.indexOf(trigger));
+    btnClose.focus();
+  };
+
+  const close = () => {
+    box.hidden = true;
+    document.body.classList.remove('is-locked');
+    if (opener) opener.focus();
+  };
+
+  document.addEventListener('click', (e) => {
+    let trigger = e.target.closest('[data-lightbox]');
+    const clone = e.target.closest('[data-clone-of]');
+    if (clone) trigger = document.querySelector(`[data-lightbox][data-slide="${clone.dataset.cloneOf}"]`);
+    if (trigger) open(trigger);
+  });
+  btnClose.addEventListener('click', close);
+  btnPrev.addEventListener('click', () => render(index - 1));
+  btnNext.addEventListener('click', () => render(index + 1));
+  box.addEventListener('click', (e) => { if (e.target === box) close(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (box.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') render(index - 1);
+    else if (e.key === 'ArrowRight') render(index + 1);
+    else if (e.key === 'Tab') {
+      const f = [btnClose, btnPrev, btnNext];
+      const i = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+    }
+  });
+
+  box.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 50) render(index + (dx < 0 ? 1 : -1));
+  });
+}
+
+function initContactForm() {
+  const form = document.getElementById('request-form');
+  const status = document.getElementById('form-status');
+  const submit = form && form.querySelector('.form__submit');
+  if (!form || !submit) return;
+
+  const label = submit.querySelector('.form__submit-text');
+  const defaultLabel = label.textContent;
+  const COOLDOWN_MS = 5000;
+  const TIMEOUT_MS = 15000;
+  const MSG = {
+    success: 'Дякуємо! Ваша заявка успішно надіслана. Ми зв’яжемося з вами найближчим часом.',
+    error: 'Не вдалося надіслати заявку. Перевірте інтернет-з’єднання та спробуйте ще раз. Або напишіть нам у Telegram/Instagram.',
+    notConfigured: 'Форму ще не підключено до Formspree: вкажіть свій ідентифікатор у атрибуті action форми.'
+  };
+  let isSubmitting = false;
+
+  const setStatus = (text, type) => {
+    status.textContent = text;
+    status.classList.remove('form__status--success', 'form__status--error');
+    if (type) status.classList.add(`form__status--${type}`);
+  };
+
+  const setLoading = (on) => {
+    isSubmitting = on;
+    submit.disabled = on;
+    submit.classList.toggle('btn--loading', on);
+    submit.setAttribute('aria-busy', String(on));
+    label.textContent = on ? 'Надсилаємо…' : defaultLabel;
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    ['name', 'contact'].forEach((n) => { form.elements[n].value = form.elements[n].value.trim(); });
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if ((form.getAttribute('action') || '').includes('YOUR_FORM_ID')) {
+      setStatus(MSG.notConfigured, 'error');
+      return;
+    }
+
+    setStatus('', null);
+    setLoading(true);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    let ok = false;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      });
+      ok = res.ok;
+    } catch (err) {
+      ok = false;
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (ok) {
+      form.reset();
+      setStatus(MSG.success, 'success');
+      submit.classList.remove('btn--loading');
+      submit.setAttribute('aria-busy', 'false');
+      label.textContent = defaultLabel;
+      setTimeout(() => { submit.disabled = false; isSubmitting = false; }, COOLDOWN_MS);
+    } else {
+      setLoading(false);
+      setStatus(MSG.error, 'error');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileMenu();
+  initSmoothScroll();
+  initPortfolioFilter();
+  initSlider();
+  initLightbox();
+  initContactForm();
+});

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <!-- ===== HEAD: кодування, viewport, SEO, шрифти, стилі ===== -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Катерина Потапенко · фотограф: портрети, випускні, весілля, хрещення</title>
+  <meta name="description" content="Портретна, весільна та дитяча фотографія. Випускні альбоми для шкіл і садочків, хрещення, дні народження.">
+  <meta name="theme-color" content="#fdfcf9">
+  <meta property="og:title" content="Катерина Потапенко · фотограф">
+  <meta property="og:description" content="Портрети, випускні альбоми, весілля, хрещення та дні народження.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://djarchd.github.io/katerina_potapenko_photographer/img/hero.webp">
+
+  <!-- Шрифт Jost лежить на самому сайті (папка fonts/), без запитів до Google -->
+  <link rel="preload" href="fonts/jost-cyrillic-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jost-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Фонове фото: легша версія для телефонів, повна для ПК -->
+  <link rel="preload" as="image" href="img/hero-800.webp" type="image/webp" media="(max-width: 47.99em)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero.webp" type="image/webp" media="(min-width: 48em)" fetchpriority="high">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%234f7a6c' stroke-width='2'%3E%3Ccircle cx='20' cy='20' r='17'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти до змісту</a>
+
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <a class="logo" href="#top" aria-label="Катерина Потапенко, фотограф. На початок сторінки">
+        <svg class="logo__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false">
+          <circle cx="20" cy="20" r="17"/><circle cx="20" cy="20" r="6"/>
+          <path d="M20 3l6 11M35.5 11.5L24 14M35.5 28.5L26 20M20 37l-6-11M4.5 28.5L16 26M4.5 11.5L14 20"/>
+        </svg>
+        <span class="logo__text">
+          <span class="logo__name">Катерина Потапенко</span>
+          <span class="logo__tagline">фотограф</span>
+        </span>
+      </a>
+
+      <button class="burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Відкрити меню">
+        <span class="burger__line"></span><span class="burger__line"></span><span class="burger__line"></span>
+      </button>
+
+      <nav class="nav" id="site-nav" aria-label="Головна навігація">
+        <ul class="nav__list">
+          <li class="nav__item"><a class="nav__link" href="#portfolio">Роботи</a></li>
+          <li class="nav__item"><a class="nav__link" href="#services">Послуги</a></li>
+          <li class="nav__item"><a class="nav__link" href="#about">Про мене</a></li>
+          <li class="nav__item"><a class="nav__link" href="#contact">Контакти</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__inner">
+        <h1 class="hero__title" id="hero-title">Світло, емоції та тихі моменти</h1>
+        <p class="hero__text">Портрети, випускні альбоми, весілля, хрещення та дні народження. Знімаю природно, без постановки, щоб на фото залишалися живі емоції.</p>
+        <a class="btn btn--primary" href="#contact">Обговорити зйомку</a>
+      </div>
+    </section>
+
+    <section class="section section--gallery" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="container container--wide">
+        <h2 class="section__title" id="portfolio-title">Вибрані роботи</h2>
+
+        <div class="filters" role="group" aria-label="Фільтр за типом зйомки">
+          <button class="filters__btn filters__btn--active" type="button" data-filter="all" aria-pressed="true">Усі</button>
+          <button class="filters__btn" type="button" data-filter="portrait" aria-pressed="false">Портрет</button>
+          <button class="filters__btn" type="button" data-filter="graduation" aria-pressed="false">Випускний</button>
+          <button class="filters__btn" type="button" data-filter="wedding" aria-pressed="false">Весілля</button>
+          <button class="filters__btn" type="button" data-filter="baptism" aria-pressed="false">Хрещення</button>
+          <button class="filters__btn" type="button" data-filter="birthday" aria-pressed="false">День народження</button>
+        </div>
+
+        <!-- Щоб додати фото: скопіюйте один рядок, змініть шляхи (мініатюра у img/gallery/, велика у img/full/), alt, data-category, data-caption і розміри width/height.
+             Рядок з data-extra показується лише у своїй категорії, а не у вкладці «Усі». -->
+      </div>
+
+      <ul class="mosaic">
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/01.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/01.webp" alt="Усміхнена дівчинка в капюшоні з букетом айстр" width="760" height="521" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="wedding"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/02.webp" data-caption="Весілля" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/02.webp" alt="Наречені цілуються під час весільної прогулянки" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="baptism"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/03.webp" data-caption="Хрещення" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/03.webp" alt="Священник поливає водою голову немовляти під час таїнства хрещення" width="760" height="1141" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="graduation"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/04.webp" data-caption="Випускний" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/04.webp" alt="Випускниця садочка в рожевій сукні біля таблички «Випуск 2026»" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="birthday"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/05.webp" data-caption="День народження" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/05.webp" alt="Іменинниця на тлі арки з повітряних кульок «Happy Birthday»" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/06.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/06.webp" alt="Портрет дівчини в сірому пальті біля ялинки" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="wedding"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/07.webp" data-caption="Весілля" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/07.webp" alt="Наречені обіймаються з букетом білих троянд біля колон" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/08.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/08.webp" alt="Дівчинка в солом’яному капелюсі в лавандовому полі" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="graduation"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/09.webp" data-caption="Випускний" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/09.webp" alt="Портрет вихованки садочка за столом" width="760" height="1064" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/10.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/10.webp" alt="Жінка в білій сукні з мискою черешень у лавандовому полі" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="wedding"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/11.webp" data-caption="Весілля" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/11.webp" alt="Обручки на букеті з білих троянд та евкаліпта" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/12.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/12.webp" alt="Дівчина біля гілки цвітучої сакури" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/13.webp" data-caption="Сімейний портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/13.webp" alt="Мама з новонародженим малюком на руках" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/14.webp" data-caption="Love story" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/14.webp" alt="Пара у вишиванках серед весняного гілля" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/15.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/15.webp" alt="Маленька дівчинка в капелюшку з букетом лаванди" width="760" height="507" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/16.webp" data-caption="Портрет" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/16.webp" alt="Портрет дівчини в хутряній шубі в профіль" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+          <li class="mosaic__item" data-category="portrait"><button class="mosaic__btn" type="button" data-lightbox data-gallery="portfolio" data-full="img/full/17.webp" data-caption="Новонароджені" aria-label="Відкрити фото на весь екран"><img class="mosaic__img" src="img/gallery/17.webp" alt="Мама схиляється над новонародженим малюком" width="760" height="1140" loading="lazy" decoding="async"></button></li>
+      </ul>
+    </section>
+
+    <section class="section section--soft" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <h2 class="section__title" id="services-title">Що я знімаю</h2>
+        <div class="services">
+          <article class="service"><h3 class="service__title">Портретна зйомка</h3><p class="service__text">Індивідуальні, сімейні та love story сесії в природній манері. М’яке світло, природні позування й щирі емоції.</p></article>
+          <article class="service"><h3 class="service__title">Випускні альбоми</h3><p class="service__text">Школи та дитячі садки: груповий і індивідуальний стиль, атмосфера й деталі, що запам’ятовуються.</p></article>
+          <article class="service"><h3 class="service__title">Весілля</h3><p class="service__text">Від ранку нареченої до першого танцю. Репортажна подача без зупинки й теплі портрети в інтимній атмосфері.</p></article>
+          <article class="service"><h3 class="service__title">Хрещення</h3><p class="service__text">Спокійна зйомка в церкві та вдома, без спалаху, з уважним ставленням до маленьких деталей та святкової атмосфери.</p></article>
+          <article class="service"><h3 class="service__title">Дні народження</h3><p class="service__text">Дитячі й сімейні свята: щирі емоції, гості, сміх і моменти, які хочеться переглядати знову і знову.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container about">
+        <figure class="about__figure"><img class="about__img" src="img/about.svg" alt="Катерина Потапенко з фотокамерою" width="1000" height="1250" loading="lazy"></figure>
+        <div class="about__body">
+          <h2 class="section__title" id="about-title">Про мене</h2>
+          <p class="about__lead">Я фотографую людей так, щоб на знімках їх можна було впізнати: з їхніми жестами, поглядом, природною посмішкою й атмосферою моменту.</p>
+          <p class="about__text">Працюю з природним світлом, обробляю кожен кадр вручну й готую альбоми до друку. Коротка зйомка — це не лише фото, а й задоволення від процесу, коли люди відчувають себе спокійно й природно.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--soft" id="contact" aria-labelledby="contact-title">
+      <div class="container contact">
+        <aside class="contact__info" aria-label="Контактні дані">
+          <h2 class="section__title" id="contact-title">Давайте знімати</h2>
+          <ul class="contact__list">
+            <li class="contact__item"><span class="contact__label">Телефон</span><a class="contact__link" href="tel:+380955847116">+380 95 584 71 16</a></li>
+            <li class="contact__item"><span class="contact__label">Telegram</span><a class="contact__link" href="https://t.me/Katya_060">@Katya_060</a></li>
+            <li class="contact__item"><span class="contact__label">Instagram</span><a class="contact__link" href="https://www.instagram.com/katerina_photosmile/">@katerina_photosmile</a></li>
+            <li class="contact__item"><span class="contact__label">Місто</span><span class="contact__link">Ваше місто</span></li>
+          </ul>
+        </aside>
+
+        <form class="form" id="request-form" action="https://formspree.io/f/mbggrndj" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="Нова заявка на зйомку з сайту">
+          <div class="form__honeypot" aria-hidden="true"><label>Не заповнюйте це поле<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+          <div class="form__field"><label class="form__label" for="f-name">Ім’я</label><input class="form__control" id="f-name" name="name" type="text" required autocomplete="name"></div>
+          <div class="form__field"><label class="form__label" for="f-contact">Телефон або Telegram</label><input class="form__control" id="f-contact" name="contact" type="text" required autocomplete="tel"></div>
+          <div class="form__field"><label class="form__label" for="f-type">Тип зйомки</label>
+            <select class="form__control" id="f-type" name="type">
+              <option>Портрет</option><option>Випускний альбом</option><option>Весілля</option><option>Хрещення</option><option>День народження</option>
+            </select>
+          </div>
+          <div class="form__field"><label class="form__label" for="f-msg">Повідомлення</label><textarea class="form__control form__control--area" id="f-msg" name="msg" placeholder="Напишіть коротко, що ви хочете зняти"></textarea></div>
+          <button class="btn btn--primary form__submit" type="submit"><span class="form__submit-text">Надіслати заявку</span><span class="btn__spinner" aria-hidden="true"></span></button>
+          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p class="footer__text">© 2026 Катерина Потапенко</p></div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Перегляд фото" hidden>
+    <button class="lightbox__btn lightbox__btn--close" type="button" aria-label="Закрити">&times;</button>
+    <button class="lightbox__btn lightbox__btn--prev" type="button" aria-label="Попереднє фото">&#8249;</button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" src="" alt="">
+      <figcaption class="lightbox__caption" aria-live="polite"></figcaption>
+    </figure>
+    <button class="lightbox__btn lightbox__btn--next" type="button" aria-label="Наступне фото">&#8250;</button>
+  </div>
+</body>
+</html>
