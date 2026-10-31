@@ -188,16 +188,17 @@ a.contact__link:hover { color: var(--color-accent); }
   *, *::before, *::after { transition: none !important; }
 }
 
-/* ===== МОЗАЇКА (галерея «стіна з фото» на всю ширину екрана): фото в натуральних пропорціях, без обрізки ===== */
+/* ===== МОЗАЇКА (стіна з фото, як на референсі): колонки однакової ширини, плитки різної висоти, усі вертикальні ===== */
 .container--wide { max-width: 96rem; }
 .section--gallery { padding-top: 3rem; padding-bottom: 3rem; }
 .mosaic { --mosaic-gap: .75rem; --mosaic-side: 1rem; columns: 2; column-gap: var(--mosaic-gap); padding-left: max(var(--mosaic-side), env(safe-area-inset-left, 0px)); padding-right: max(var(--mosaic-side), env(safe-area-inset-right, 0px)); }
 .mosaic__item { break-inside: avoid; margin: 0 0 var(--mosaic-gap); }
 .mosaic__item[hidden] { display: none !important; }
 .mosaic__btn { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--color-soft); border-radius: 4px; overflow: hidden; cursor: zoom-in; }
-.mosaic__img { display: block; width: 100%; height: auto; transition: transform .6s ease; }
+/* --ar: пропорції плитки (4 / 5, 3 / 4, 2 / 3, 1 / 1), --pos: яку частину фото показувати при обрізці */
+.mosaic__img { display: block; width: 100%; height: auto; aspect-ratio: var(--ar, 4 / 5); object-fit: cover; object-position: var(--pos, 50% 28%); transition: transform .6s ease; }
 .mosaic__btn::after { content: ""; position: absolute; inset: 0; background: var(--photo-veil); pointer-events: none; transition: opacity .4s ease; }
 .mosaic__btn:hover .mosaic__img, .mosaic__btn:focus-visible .mosaic__img { transform: scale(1.04); }
 .mosaic__btn:hover::after, .mosaic__btn:focus-visible::after { opacity: 0; }
-@media (min-width: 40em) { .mosaic { columns: 3; --mosaic-side: 2rem; } }
-@media (min-width: 64em) { .mosaic { columns: 4; --mosaic-side: 3rem; } }
+@media (min-width: 40em) { .mosaic { columns: 3; --mosaic-gap: 1rem; --mosaic-side: 1.3rem; } }
+@media (min-width: 64em) { .mosaic { columns: 4; } }
